@@ -3,8 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - LDS Movies App</title>
-    <link rel="stylesheet" href="~/css/" />
+    <title>@ViewData["Title"] - LDS Movies</title>
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
@@ -27,11 +26,11 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">LDS Movies</a>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">LDS Movies Database</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Movies" asp-action="Index">Home</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
                 </ul>
@@ -45,7 +44,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>James Kennedy&nbsp;|&nbsp;&copy;USA 2020&nbsp;|&nbsp;LDS Movies&nbsp;|&nbsp;<a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a></p>
+            <p>James Kennedy&nbsp;|&nbsp;&copy;&nbsp;USA 2020&nbsp;|&nbsp;LDS Movies Database&nbsp;|&nbsp;<a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a></p>
         </footer>
     </div>
 

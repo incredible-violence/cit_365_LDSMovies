@@ -5,41 +5,42 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using LDSMovies.Models;
+using WorkingLDSMovies.Models;
 
-namespace LDSMovies.Controllers
+namespace WorkingLDSMovies.Controllers
 {
     public class MoviesController : Controller
     {
-        private readonly LDSMoviesContext _context;
+        private readonly WorkingLDSMoviesContext _context;
 
-        public MoviesController(LDSMoviesContext context)
+        public MoviesController(WorkingLDSMoviesContext context)
         {
             _context = context;
         }
 
         // GET: Movies
-        public async Task<IActionResult> Index(string movieGenre, string searchString, string sortOrder, string currentFilter, int? page)
+        public async Task<IActionResult> Index(string movieGenre, string searchString, string sortOrder)
         {
             ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
-            int pageSize = 5;
+
             // Use LINQ to get list of genres.
             IQueryable<string> genreQuery = from m in _context.Movie
                                             orderby m.Genre
                                             select m.Genre;
 
-            if (searchString != null)
-            {
-                page = 1;
-            }
-            else
-            {
-                searchString = currentFilter;
-            }
-
             var movies = from m in _context.Movie
                          select m;
-            
+
+            switch (sortOrder)
+            {
+                case "date_desc":
+                    movies = movies.OrderByDescending(s => s.ReleaseDate);
+                    break;
+                default:
+                    movies = movies.OrderBy(s => s.ReleaseDate);
+                    break;
+            }
+
             if (!string.IsNullOrEmpty(searchString))
             {
                 movies = movies.Where(s => s.Title.Contains(searchString));
@@ -53,22 +54,10 @@ namespace LDSMovies.Controllers
             var movieGenreVM = new MovieGenreViewModel
             {
                 Genres = new SelectList(await genreQuery.Distinct().ToListAsync()),
-                SearchString = searchString,
-                Movies = await movies.ToListAsync()
+                Movies = await movies.AsNoTracking().ToListAsync()
             };
 
-            switch (sortOrder)
-            {
-                case "date_desc":
-                    movies = movies.OrderByDescending(s => s.ReleaseDate);
-                    break;
-                default:
-                    movies = movies.OrderBy(s => s.ReleaseDate);
-                    break;
-            }
-
-            
-            return View(await movies.ToListAsync());
+            return View(movieGenreVM);
         }
 
         // GET: Movies/Details/5
@@ -100,7 +89,7 @@ namespace LDSMovies.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,ReleaseDate,Genre,Price,Rating")] Movie movie)
+        public async Task<IActionResult> Create([Bind("Id,Title,ReleaseDate,Price,Genre,Rating")] Movie movie)
         {
             if (ModelState.IsValid)
             {
@@ -132,7 +121,7 @@ namespace LDSMovies.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,ReleaseDate,Genre,Price,Rating")] Movie movie)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,ReleaseDate,Price,Genre,Rating")] Movie movie)
         {
             if (id != movie.Id)
             {

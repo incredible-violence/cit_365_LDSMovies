@@ -28,14 +28,59 @@ body {
     margin: 15px;
 }
 
-.navbar {
-    background-color: #56b4d9;
-}
-
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {
     /* Hide captions */
     .carousel-caption {
         display: none;
     }
+}
+
+.navbar {
+    background-color: darkred; 
+
+}
+
+.navbar-nav li a {
+    color: black;
+}
+
+.createButton {
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+    .createButton a {
+        color: grey;
+        border: .5px solid black;
+        color: white;
+        background-color: darkred;
+        padding: 7px 15px 5px 15px;
+    }
+
+    tbody td a {
+        color: darkred;
+    }
+
+    thead th a {
+        color: darkred;
+    }
+
+.submitButton {
+    color: grey;
+    border: .5px solid black;
+    color: white;
+    background-color: darkred;
+    padding: 7px 15px 5px 15px;
+}
+p select {
+    padding: 5px 0 5px 0;
+}
+
+#searchBox {
+    padding: 3px 0 3px 0;
+}
+
+footer p a {
+    color: darkred;
 }
